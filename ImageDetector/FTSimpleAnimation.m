@@ -13,7 +13,7 @@
 + (void)makeBlackScreenAppearing:(UIView*)shadingScreen{
 	shadingScreen.alpha		= 0;
 	shadingScreen.hidden	= NO;
-	printf("--------\n");
+
 	[UIView animateWithDuration: .5f
 					 animations:^{
 						 shadingScreen.alpha = .5f; 

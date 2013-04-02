@@ -142,6 +142,7 @@
     _timeStat.flann_Det.text    = floatToNSString(stat->time_FlannMatcher);
     _timeStat.display_GM.text   = floatToNSString(stat->time_DrawGoodMatch);
     _timeStat.corner_det.text   = floatToNSString(stat->time_DetectCorner);
+    [_timeStat didImageMatche: stat->didFindMatch];
 }
 
 @end

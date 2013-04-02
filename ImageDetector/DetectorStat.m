@@ -19,6 +19,17 @@
 
 #pragma mark - public
 
+- (void)didImageMatche:(BOOL)didMatch{
+    if(didMatch){
+        _didMatch.text              = @"OUI";
+        _didMatch.backgroundColor   = [UIColor greenColor];
+    }
+    else{
+        _didMatch.text              = @"NON";
+        _didMatch.backgroundColor   = [UIColor orangeColor];
+    }
+}
+
 - (void)clearOutput{
     _ext_0.text         = @"";
     _ext_1.text         = @"";
@@ -35,6 +46,7 @@
     [_flann_Det     release];
     [_display_GM    release];
     [_corner_det    release];
+    [_didMatch      release];
     [super dealloc];
 }
 @end

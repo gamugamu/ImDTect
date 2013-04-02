@@ -16,9 +16,10 @@
     NSString* basePath          = allPAth[0];
     NSMutableArray* fullPath    = [NSMutableArray arrayWithCapacity: 10];
 
-    for(NSString* fileName in [fileManager contentsOfDirectoryAtPath: basePath error: nil])
-       [fullPath addObject: [basePath stringByAppendingPathComponent: fileName]];
-    
+    for(NSString* fileName in [fileManager contentsOfDirectoryAtPath: basePath error: nil]){
+        if(![fileName rangeOfString:@".DSStore"].length)
+            [fullPath addObject: [basePath stringByAppendingPathComponent: fileName]];
+    }
     NSLog(@"Document Path %@", allPAth[0]);
 
     return fullPath;

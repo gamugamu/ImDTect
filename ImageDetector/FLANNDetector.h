@@ -17,6 +17,7 @@ struct timeFLANNlapsed{
     float time_FlannMatcher;
     float time_DrawGoodMatch;
     float time_DetectCorner;
+    BOOL didFindMatch;
 };
 
 cv::Mat detectWithFlann(cv::Mat image, cv::Mat image2, timeFLANNlapsed* timeStat);

@@ -18,10 +18,11 @@ static void startTimeMesurement();
 static double outputTimeMesurement();
 
 Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
+    timeStat->didFindMatch = false;
+
     // convertit les images en niveau de gris.
     Mat img_1; cvtColor(image, img_1, CV_BGR2GRAY);
     Mat img_2; cvtColor(image2, img_2, CV_BGR2GRAY);
-    
     
     //-- Detection des points clès avec le SURF Detector.
     int minHessian = 1000;
@@ -56,7 +57,7 @@ Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     //-- Quick calculation of max and min distances between keypoints
     for( int i = 0; i < descriptors_1.rows; i++ ){
         double dist = matches[i].distance;
-        printf("get distance %lf\n", dist);
+
         if( dist < min_dist )
             min_dist = dist;
         
@@ -108,6 +109,18 @@ Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     std::vector<Point2f> scene_corners(4);
     
     perspectiveTransform( obj_corners, scene_corners, H);
+    
+    // Si on peut former une zone de points réciproques alors les deux
+    // images correspindent.
+    timeStat->didFindMatch = true;
+    
+    for (int i = 0; i < 3; i++) {
+        if(abs((int)scene_corners[i].x - (int)scene_corners[i + 1].x) < 5 ||
+           abs((int)scene_corners[i].y - (int)scene_corners[i + 1].y) < 5){
+            timeStat->didFindMatch = false;
+        }
+        printf("i:%i pnt[%i | %i]\n", i, (int)scene_corners[i].x, (int)scene_corners[i].y);
+    }
     
     //-- Draw lines between the corners (the mapped object in the scene - image_2 )
     line( img_matches, scene_corners[0] + Point2f( img_1.cols, 0), scene_corners[1] + Point2f( img_1.cols, 0), Scalar(0, 255, 0), 4 );

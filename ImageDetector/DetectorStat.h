@@ -15,4 +15,6 @@
 @property (retain, nonatomic) IBOutlet UILabel *flann_Det;
 @property (retain, nonatomic) IBOutlet UILabel *display_GM;
 @property (retain, nonatomic) IBOutlet UILabel *corner_det;
+@property (retain, nonatomic) IBOutlet UILabel *didMatch;
+- (void)didImageMatche:(BOOL)didMatch;
 @end
