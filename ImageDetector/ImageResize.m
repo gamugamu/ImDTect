@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Abadie, Loïc. All rights reserved.
 //
 
-#import "CropImage.h"
+#import "ImageResize.h"
 
-@implementation CropImage
+@implementation ImageResize
 
 + (UIImage*)reduceImage:(UIImage*)image size:(CGSize)size{
     UIImage *originalImage = image;

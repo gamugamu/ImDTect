@@ -7,7 +7,7 @@
 //
 
 #import "ImageListVC.h"
-#import "CropImage.h"
+#import "ImageResize.h"
 
 @interface ImageListVC ()
 @property(nonatomic, retain)NSMutableArray* miniImageList;
@@ -26,7 +26,7 @@
     self.miniImageList = [NSMutableArray array];
     
     for(UIImage* image in list){
-        UIImage* mini =[CropImage reduceImage: image size: CGSizeMake(70, 70)];
+        UIImage* mini =[ImageResize reduceImage: image size: CGSizeMake(70, 70)];
         [_miniImageList addObject: mini];
     }
     

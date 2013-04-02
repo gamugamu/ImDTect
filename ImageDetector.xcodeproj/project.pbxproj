@@ -10,10 +10,11 @@
 		EB499AB31705DFBE00998C0A /* ImageListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EB499AB11705DFBE00998C0A /* ImageListVC.m */; };
 		EB499AB41705DFBE00998C0A /* ImageListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB499AB21705DFBE00998C0A /* ImageListVC.xib */; };
 		EB499AB81705E1D200998C0A /* ImageFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = EB499AB71705E1D200998C0A /* ImageFinder.m */; };
-		EB499ABC1705E45300998C0A /* CropImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB499ABB1705E45300998C0A /* CropImage.m */; };
+		EB499ABC1705E45300998C0A /* ImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = EB499ABB1705E45300998C0A /* ImageResize.m */; };
 		EB499AC11705E5CD00998C0A /* ImageList.m in Sources */ = {isa = PBXBuildFile; fileRef = EB499AC01705E5CD00998C0A /* ImageList.m */; };
 		EB499ACA1705F51800998C0A /* CompareImages.m in Sources */ = {isa = PBXBuildFile; fileRef = EB499AC81705F51800998C0A /* CompareImages.m */; };
 		EB499ACB1705F51800998C0A /* CompareImages.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB499AC91705F51800998C0A /* CompareImages.xib */; };
+		EBBA6A93170AC140000FC4F1 /* FLANNDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = EBBA6A91170AC140000FC4F1 /* FLANNDetector.mm */; };
 		EBBEF6971705CEE400701244 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBEF6961705CEE400701244 /* UIKit.framework */; };
 		EBBEF6991705CEE400701244 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBEF6981705CEE400701244 /* Foundation.framework */; };
 		EBBEF69B1705CEE400701244 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBEF69A1705CEE400701244 /* CoreGraphics.framework */; };
@@ -43,14 +44,16 @@
 		EB499AB21705DFBE00998C0A /* ImageListVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageListVC.xib; sourceTree = "<group>"; };
 		EB499AB61705E1D200998C0A /* ImageFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFinder.h; sourceTree = "<group>"; };
 		EB499AB71705E1D200998C0A /* ImageFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFinder.m; sourceTree = "<group>"; };
-		EB499ABA1705E45300998C0A /* CropImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CropImage.h; sourceTree = "<group>"; };
-		EB499ABB1705E45300998C0A /* CropImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CropImage.m; sourceTree = "<group>"; };
+		EB499ABA1705E45300998C0A /* ImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResize.h; sourceTree = "<group>"; };
+		EB499ABB1705E45300998C0A /* ImageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResize.m; sourceTree = "<group>"; };
 		EB499ABF1705E5CD00998C0A /* ImageList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageList.h; sourceTree = "<group>"; };
 		EB499AC01705E5CD00998C0A /* ImageList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageList.m; sourceTree = "<group>"; };
 		EB499AC51705E61E00998C0A /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
 		EB499AC71705F51800998C0A /* CompareImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompareImages.h; sourceTree = "<group>"; };
 		EB499AC81705F51800998C0A /* CompareImages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompareImages.m; sourceTree = "<group>"; };
 		EB499AC91705F51800998C0A /* CompareImages.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompareImages.xib; sourceTree = "<group>"; };
+		EBBA6A91170AC140000FC4F1 /* FLANNDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FLANNDetector.mm; sourceTree = "<group>"; };
+		EBBA6A92170AC140000FC4F1 /* FLANNDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLANNDetector.h; sourceTree = "<group>"; };
 		EBBEF6931705CEE400701244 /* ImageDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBEF6961705CEE400701244 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		EBBEF6981705CEE400701244 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -115,6 +118,8 @@
 		EB499AB51705E1B200998C0A /* imageFinder */ = {
 			isa = PBXGroup;
 			children = (
+				EB499AB61705E1D200998C0A /* ImageFinder.h */,
+				EB499AB71705E1D200998C0A /* ImageFinder.m */,
 			);
 			name = imageFinder;
 			sourceTree = "<group>";
@@ -122,32 +127,31 @@
 		EB499AB91705E44100998C0A /* model */ = {
 			isa = PBXGroup;
 			children = (
+				EBBA6A90170AC11E000FC4F1 /* FLANN-detector */,
 				EB499AC51705E61E00998C0A /* SynthesizeSingleton.h */,
 				EB499AB51705E1B200998C0A /* imageFinder */,
-				EB499AB61705E1D200998C0A /* ImageFinder.h */,
-				EB499AB71705E1D200998C0A /* ImageFinder.m */,
-				EB499ABE1705E5B600998C0A /* ImageList */,
-				EB499ABD1705E5A900998C0A /* cropImage */,
+				EB499ABE1705E5B600998C0A /* ImageListData */,
+				EB499ABD1705E5A900998C0A /* ImageResize */,
 			);
 			name = model;
 			sourceTree = "<group>";
 		};
-		EB499ABD1705E5A900998C0A /* cropImage */ = {
+		EB499ABD1705E5A900998C0A /* ImageResize */ = {
 			isa = PBXGroup;
 			children = (
-				EB499ABA1705E45300998C0A /* CropImage.h */,
-				EB499ABB1705E45300998C0A /* CropImage.m */,
+				EB499ABA1705E45300998C0A /* ImageResize.h */,
+				EB499ABB1705E45300998C0A /* ImageResize.m */,
 			);
-			name = cropImage;
+			name = ImageResize;
 			sourceTree = "<group>";
 		};
-		EB499ABE1705E5B600998C0A /* ImageList */ = {
+		EB499ABE1705E5B600998C0A /* ImageListData */ = {
 			isa = PBXGroup;
 			children = (
 				EB499ABF1705E5CD00998C0A /* ImageList.h */,
 				EB499AC01705E5CD00998C0A /* ImageList.m */,
 			);
-			name = ImageList;
+			name = ImageListData;
 			sourceTree = "<group>";
 		};
 		EB499AC61705F4F900998C0A /* compareImage */ = {
@@ -158,6 +162,15 @@
 				EB499AC91705F51800998C0A /* CompareImages.xib */,
 			);
 			name = compareImage;
+			sourceTree = "<group>";
+		};
+		EBBA6A90170AC11E000FC4F1 /* FLANN-detector */ = {
+			isa = PBXGroup;
+			children = (
+				EBBA6A91170AC140000FC4F1 /* FLANNDetector.mm */,
+				EBBA6A92170AC140000FC4F1 /* FLANNDetector.h */,
+			);
+			name = "FLANN-detector";
 			sourceTree = "<group>";
 		};
 		EBBEF68A1705CEE400701244 = {
@@ -196,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				EBBEF6C71705D01700701244 /* UIImage+OpenCv */,
+				EB499AB91705E44100998C0A /* model */,
 				EBBEF6D31705D24D00701244 /* controllers */,
 				EBBEF6A51705CEE500701244 /* AppDelegate.h */,
 				EBBEF6A61705CEE500701244 /* AppDelegate.mm */,
@@ -224,7 +238,6 @@
 		EBBEF6C71705D01700701244 /* UIImage+OpenCv */ = {
 			isa = PBXGroup;
 			children = (
-				EB499AB91705E44100998C0A /* model */,
 				EBBEF6D21705D1D600701244 /* category */,
 				EBBEF6D11705D1CA00701244 /* adaptator */,
 			);
@@ -357,9 +370,10 @@
 				EBBEF6DD1705D2F400701244 /* Mediator.m in Sources */,
 				EB499AB31705DFBE00998C0A /* ImageListVC.m in Sources */,
 				EB499AB81705E1D200998C0A /* ImageFinder.m in Sources */,
-				EB499ABC1705E45300998C0A /* CropImage.m in Sources */,
+				EB499ABC1705E45300998C0A /* ImageResize.m in Sources */,
 				EB499AC11705E5CD00998C0A /* ImageList.m in Sources */,
 				EB499ACA1705F51800998C0A /* CompareImages.m in Sources */,
+				EBBA6A93170AC140000FC4F1 /* FLANNDetector.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

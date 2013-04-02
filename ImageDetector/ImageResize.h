@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CropImage : NSObject
+@interface ImageResize : NSObject
 + (UIImage*)reduceImage:(UIImage*)image size:(CGSize)size;
 @end
