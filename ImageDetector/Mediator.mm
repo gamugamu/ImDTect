@@ -84,6 +84,8 @@
 #pragma mark -------------------------- private --------------------------------
 #pragma mark -------------------------------------------------------------------
 
+#pragma mark - setUp
+
 - (void)setUp{
     _displayer_0    = [[ImageDisplayer alloc] initWithNibName: @"ImageDisplayer" bundle: nil];
     _displayer_1    = [[ImageDisplayer alloc] initWithNibName: @"ImageDisplayer" bundle: nil];
@@ -95,13 +97,22 @@
     _imageList.delegate = self;
 }
 
+#pragma mark - display
+
 // compare 2 images grace au FLANN et renvoie le résultat en image. Le résultat
 // sera affiché dans le controller "_compareImage"
 - (void)detectImagesMatch:(UIImage*)imageOne withImageTwo:(UIImage*)imageTwo{
     if(imageOne && imageTwo){
-        cv::Mat imageDetected           = detectWithFlann([imageOne CVMat], [imageTwo CVMat]);
+        timeFLANNlapsed timeStat;
+        cv::Mat imageDetected           = detectWithFlann([imageOne CVMat], [imageTwo CVMat], &timeStat);
         _compareImages.imageView.image  = [UIImage imageWithCVMat: imageDetected];
+        
+        [self displayTimeStat: &timeStat];
     }
+}
+
+- (void)displayTimeStat:(timeFLANNlapsed*)stat{
+
 }
 
 @end

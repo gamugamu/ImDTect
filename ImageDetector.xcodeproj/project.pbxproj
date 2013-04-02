@@ -15,6 +15,8 @@
 		EB499ACA1705F51800998C0A /* CompareImages.m in Sources */ = {isa = PBXBuildFile; fileRef = EB499AC81705F51800998C0A /* CompareImages.m */; };
 		EB499ACB1705F51800998C0A /* CompareImages.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB499AC91705F51800998C0A /* CompareImages.xib */; };
 		EBBA6A93170AC140000FC4F1 /* FLANNDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = EBBA6A91170AC140000FC4F1 /* FLANNDetector.mm */; };
+		EBBA6A98170ACF37000FC4F1 /* TimeImageDetectorStat.m in Sources */ = {isa = PBXBuildFile; fileRef = EBBA6A96170ACF37000FC4F1 /* TimeImageDetectorStat.m */; };
+		EBBA6A99170ACF37000FC4F1 /* TimeImageDetectorStat.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBBA6A97170ACF37000FC4F1 /* TimeImageDetectorStat.xib */; };
 		EBBEF6971705CEE400701244 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBEF6961705CEE400701244 /* UIKit.framework */; };
 		EBBEF6991705CEE400701244 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBEF6981705CEE400701244 /* Foundation.framework */; };
 		EBBEF69B1705CEE400701244 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBEF69A1705CEE400701244 /* CoreGraphics.framework */; };
@@ -54,6 +56,9 @@
 		EB499AC91705F51800998C0A /* CompareImages.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompareImages.xib; sourceTree = "<group>"; };
 		EBBA6A91170AC140000FC4F1 /* FLANNDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FLANNDetector.mm; sourceTree = "<group>"; };
 		EBBA6A92170AC140000FC4F1 /* FLANNDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLANNDetector.h; sourceTree = "<group>"; };
+		EBBA6A95170ACF37000FC4F1 /* TimeImageDetectorStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeImageDetectorStat.h; sourceTree = "<group>"; };
+		EBBA6A96170ACF37000FC4F1 /* TimeImageDetectorStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeImageDetectorStat.m; sourceTree = "<group>"; };
+		EBBA6A97170ACF37000FC4F1 /* TimeImageDetectorStat.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeImageDetectorStat.xib; sourceTree = "<group>"; };
 		EBBEF6931705CEE400701244 /* ImageDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBEF6961705CEE400701244 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		EBBEF6981705CEE400701244 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -173,6 +178,16 @@
 			name = "FLANN-detector";
 			sourceTree = "<group>";
 		};
+		EBBA6A94170ACF11000FC4F1 /* TimeStat */ = {
+			isa = PBXGroup;
+			children = (
+				EBBA6A95170ACF37000FC4F1 /* TimeImageDetectorStat.h */,
+				EBBA6A96170ACF37000FC4F1 /* TimeImageDetectorStat.m */,
+				EBBA6A97170ACF37000FC4F1 /* TimeImageDetectorStat.xib */,
+			);
+			name = TimeStat;
+			sourceTree = "<group>";
+		};
 		EBBEF68A1705CEE400701244 = {
 			isa = PBXGroup;
 			children = (
@@ -265,6 +280,7 @@
 		EBBEF6D31705D24D00701244 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				EBBA6A94170ACF11000FC4F1 /* TimeStat */,
 				EB499AC61705F4F900998C0A /* compareImage */,
 				EB499AAF1705DF9F00998C0A /* tableView */,
 				EBBEF6DA1705D2C000701244 /* mediator */,
@@ -351,6 +367,7 @@
 				EBBEF6D91705D29900701244 /* ImageDisplayer.xib in Resources */,
 				EB499AB41705DFBE00998C0A /* ImageListVC.xib in Resources */,
 				EB499ACB1705F51800998C0A /* CompareImages.xib in Resources */,
+				EBBA6A99170ACF37000FC4F1 /* TimeImageDetectorStat.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +391,7 @@
 				EB499AC11705E5CD00998C0A /* ImageList.m in Sources */,
 				EB499ACA1705F51800998C0A /* CompareImages.m in Sources */,
 				EBBA6A93170AC140000FC4F1 /* FLANNDetector.mm in Sources */,
+				EBBA6A98170ACF37000FC4F1 /* TimeImageDetectorStat.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

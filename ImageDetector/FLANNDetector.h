@@ -11,6 +11,14 @@
 
 #include <iostream>
 
-cv::Mat detectWithFlann(cv::Mat image, cv::Mat image2);
+struct timeFLANNlapsed{
+    float time_extracted_image_0;
+    float time_extracted_image_1;
+    float time_FlannMatcher;
+    float time_DrawGoodMatch;
+    float time_DetectCorner;
+};
+
+cv::Mat detectWithFlann(cv::Mat image, cv::Mat image2, timeFLANNlapsed* timeStat);
 
 #endif /* defined(__ImageDetector__FLANNDetector__) */

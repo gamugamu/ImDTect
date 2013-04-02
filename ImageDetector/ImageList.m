@@ -52,7 +52,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ImageList);
     
     for (NSString* path in list) {
         UIImage* image = [UIImage imageWithContentsOfFile: path];
-        NSLog(@"iumage %@ - path: %@", image, path);
         [_imageList addObject: image];
     }
 }

@@ -9,15 +9,22 @@
 #include "FLANNDetector.h"
 
 using namespace cv;
+using namespace std;
 
-Mat detectWithFlann(Mat image, Mat image2){
+// global
+
+static double t;
+static void startTimeMesurement();
+static double outputTimeMesurement();
+
+Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     // convertit les images en niveau de gris.
     Mat img_1; cvtColor(image, img_1, CV_BGR2GRAY);
     Mat img_2; cvtColor(image2, img_2, CV_BGR2GRAY);
     
     
     //-- Detection des points clès avec le SURF Detector.
-    int minHessian = 400;
+    int minHessian = 1000;
     SurfFeatureDetector detector(minHessian);
     std::vector<KeyPoint> keypoints_1, keypoints_2;
     
@@ -29,10 +36,16 @@ Mat detectWithFlann(Mat image, Mat image2){
     
     Mat descriptors_1, descriptors_2;
     
+    startTimeMesurement();
     extractor.compute( img_1, keypoints_1, descriptors_1 );
-    extractor.compute( img_2, keypoints_2, descriptors_2 );
+    timeStat->time_extracted_image_0 = outputTimeMesurement();
     
+    startTimeMesurement();
+    extractor.compute( img_2, keypoints_2, descriptors_2 );
+    timeStat->time_extracted_image_1 = outputTimeMesurement();
+
     //-- Step 3: Matching descriptor vectors using FLANN matcher
+    startTimeMesurement();
     FlannBasedMatcher matcher;
     std::vector< DMatch > matches;
     matcher.match( descriptors_1, descriptors_2, matches );
@@ -46,15 +59,16 @@ Mat detectWithFlann(Mat image, Mat image2){
         printf("get distance %lf\n", dist);
         if( dist < min_dist )
             min_dist = dist;
-            if( dist > max_dist )
-                max_dist = dist;
-                }
+        
+        if( dist > max_dist )
+            max_dist = dist;
+    }
     
-    printf("-- Max dist : %f \n", max_dist );
-    printf("-- Min dist : %f \n", min_dist );
+    timeStat->time_FlannMatcher = outputTimeMesurement();
     
     //-- Draw only "good" matches (i.e. whose distance is less than 2*min_dist )
     //-- PS.- radiusMatch can also be used here.
+    startTimeMesurement();
     std::vector< DMatch > good_matches;
     
     for( int i = 0; i < descriptors_1.rows; i++ ){
@@ -80,13 +94,17 @@ Mat detectWithFlann(Mat image, Mat image2){
         scene.push_back( keypoints_2[ good_matches[i].trainIdx ].pt );
     }
     
-    
+    timeStat->time_DrawGoodMatch = outputTimeMesurement();
+
+    startTimeMesurement();
     Mat H = findHomography( obj, scene, CV_RANSAC );
     
     //-- Get the corners from the image_1 ( the object to be "detected" )
     std::vector<Point2f> obj_corners(4);
-    obj_corners[0] = cvPoint(0,0); obj_corners[1] = cvPoint( img_1.cols, 0 );
-    obj_corners[2] = cvPoint( img_1.cols, img_1.rows ); obj_corners[3] = cvPoint( 0, img_1.rows );
+    obj_corners[0] = cvPoint(0,0);
+    obj_corners[1] = cvPoint( img_1.cols, 0 );
+    obj_corners[2] = cvPoint( img_1.cols, img_1.rows );
+    obj_corners[3] = cvPoint( 0, img_1.rows );
     std::vector<Point2f> scene_corners(4);
     
     perspectiveTransform( obj_corners, scene_corners, H);
@@ -97,8 +115,21 @@ Mat detectWithFlann(Mat image, Mat image2){
     line( img_matches, scene_corners[2] + Point2f( img_1.cols, 0), scene_corners[3] + Point2f( img_1.cols, 0), Scalar( 0, 255, 0), 4 );
     line( img_matches, scene_corners[3] + Point2f( img_1.cols, 0), scene_corners[0] + Point2f( img_1.cols, 0), Scalar( 0, 255, 0), 4 );
     
-    for( int i = 0; i < good_matches.size(); i++ )
+    timeStat->time_DetectCorner = outputTimeMesurement();
+
+  /*  for( int i = 0; i < good_matches.size(); i++ )
         printf( "-- Good Match [%d] Keypoint 1: %d  -- Keypoint 2: %d  \n", i, good_matches[i].queryIdx, good_matches[i].trainIdx );
-        
+    */    
     return img_matches;
+}
+
+// détection du temps
+static void startTimeMesurement(){
+    t = (double)getTickCount();
+}
+
+
+static double outputTimeMesurement{
+    t = ((double)getTickCount() - t)/getTickFrequency();
+    return t;
 }
