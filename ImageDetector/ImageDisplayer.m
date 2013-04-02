@@ -12,20 +12,27 @@
 @end
 
 @implementation ImageDisplayer
-@synthesize isSelected  = _isSelected;
+@synthesize isSelected     = _isSelected,
+            delegate       = _delegate;
 
 #pragma mark -------------------------- public ---------------------------------
 #pragma mark -------------------------------------------------------------------
 
 #pragma mark - public
 
--(void)setIsSelected:(BOOL)isSelected{
-    self.view.backgroundColor = isSelected? [UIColor blueColor] : [UIColor whiteColor];
+- (void)setIsSelected:(BOOL)isSelected{
+    self.view.backgroundColor = isSelected? [UIColor blueColor] : [UIColor yellowColor];
+    _isSelected = isSelected;
 }
 
 #pragma mark getter / setter
 
 #pragma mark - lifeCycle
+
+- (void)viewDidLoad{
+    [self addTouchGesture];
+    [super viewDidLoad];
+}
 
 #pragma mark - alloc / Dealloc
 
@@ -36,4 +43,25 @@
 
 #pragma mark -------------------------- private --------------------------------
 #pragma mark -------------------------------------------------------------------
+
+- (void)toggleSelected{
+    if(!_isSelected){
+        self.isSelected = !_isSelected;
+
+        if([_delegate respondsToSelector: @selector(imageDisplayerChanged:)])
+            [_delegate imageDisplayerChanged: self];
+    }
+}
+
+#pragma mark - touch logic
+
+- (void)addTouchGesture{
+    UIGestureRecognizer* touch = [[UITapGestureRecognizer alloc]
+                                  initWithTarget: self
+                                  action: @selector(toggleSelected)];
+    
+    [self.view addGestureRecognizer: touch];
+        [touch release];
+}
+
 @end

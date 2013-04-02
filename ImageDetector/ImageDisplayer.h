@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class ImageDisplayer;
+@protocol ImageDisplayerDelegate <NSObject>
+- (void)imageDisplayerChanged:(ImageDisplayer*)displayer;
+@end
+
 @interface ImageDisplayer : UIViewController
+@property(nonatomic, assign)id<ImageDisplayerDelegate> delegate;
 @property (retain, nonatomic) IBOutlet UIImageView *image;
 @property(nonatomic, assign)BOOL isSelected;
 @end

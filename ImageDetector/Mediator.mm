@@ -16,7 +16,9 @@
 #import "UIImage+OpenCV.h"
 #import "FTSimpleAnimation.h"
 
-@interface Mediator()<ImageListVCDelegate>
+@interface Mediator()<ImageListVCDelegate, ImageDisplayerDelegate>{
+    ImageDisplayer* currentSelectedDisplayer;
+}
 @property(nonatomic, retain)ImageDisplayer*         displayer_0;
 @property(nonatomic, retain)ImageDisplayer*         displayer_1;
 @property(nonatomic, retain)ImageListVC*            imageList;
@@ -60,19 +62,26 @@
 #pragma mark - ImageListDelegate
 
 - (void)imageSelected:(NSUInteger)idx{
-    static ImageDisplayer* lastDisplayer = nil;
-    static int switcher         = 0;
-    
-    ImageDisplayer* displayer   = (++switcher % 2)? _displayer_0 : _displayer_1;
-    lastDisplayer.isSelected    = NO;
-    displayer.isSelected        = YES;
-    displayer.image.image       = [_allImage imageAtIndex: idx];
-    lastDisplayer               = displayer;
+    currentSelectedDisplayer.image.image = [_allImage imageAtIndex: idx];
  
     // si les deux controllers possèdent chacun une image, alors on lance
     // l'analyse
     [self detectImagesMatch: _displayer_0.image.image
                withImageTwo: _displayer_1.image.image];
+}
+
+#pragma mark - ImageDisplayerDelegate
+
+- (void)imageDisplayerChanged:(ImageDisplayer*)displayer{
+    ImageDisplayer* displayOff = (displayer == _displayer_0)? _displayer_1 : _displayer_0;
+    
+    if(displayer.isSelected){
+        currentSelectedDisplayer = displayer;
+        displayOff.isSelected = NO;
+    }else{
+        currentSelectedDisplayer = displayOff;
+    }
+    
 }
 
 #pragma mark alloc / dealloc
@@ -107,7 +116,9 @@
     _allImage       = [ImageList sharedImageList];
 
     [_imageList makeSmallImage: [[ImageList sharedImageList] imageList]];
-    _imageList.delegate = self;
+    _imageList.delegate     = self;
+    _displayer_0.delegate   = self;
+    _displayer_1.delegate   = self;
 }
 
 #pragma mark - display
@@ -126,7 +137,7 @@
             __block timeFLANNlapsed timeStat;
             __block cv::Mat imageDetected = detectWithFlann([imageOne CVMat], [imageTwo CVMat], &timeStat);
             
-            // l'affichage se fait depuis la main thread.
+            // puis l'affichage se fait depuis la main thread.
             dispatch_async(dispatch_get_main_queue(),^{
                 _compareImages.imageView.image  = [UIImage imageWithCVMat: imageDetected];
                 [self displayTimeStat: &timeStat];
