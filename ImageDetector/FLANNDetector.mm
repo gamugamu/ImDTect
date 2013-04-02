@@ -151,12 +151,17 @@ static bool shapeIsSquare(std::vector<Point2f> points /* 4 */){
     printf("%i %i %i %i \n", x1, x2, x3, x4);
     printf("%i %i %i %i \n", y1, y2, y3, y4);
     
-    printf("eval %i %i\n", x1 - x2, y3 - y4);
-    // si les points sont trop rapprochés, ce n'est pas un rectangle.
+    printf("evalX %i %i\n", abs(x1 - x2), abs(x3 - x4));
+    printf("evalY %i %i\n", abs(x3 - y4), abs(y2 - y1));
 
-    if(abs(x1 - x2) < tolerance && abs(y3 - y4) < tolerance)
+    // si les points sont trop rapprochés, ce n'est pas un rectangle.
+    
+    if((abs(x1 - x2) < tolerance || abs(x3 - x4) < tolerance) ||
+       (abs(x1 - x3) < tolerance || abs(x2 - x4) < tolerance))
         return false;
     
+    else
+        return true;
     // plus le resultat est proche de zero, plus on a affaire à un rectangle
     
 
