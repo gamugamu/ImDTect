@@ -35,7 +35,7 @@
 		EBBEF6D01705D1C200701244 /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = EBBEF6CF1705D1C200701244 /* UIImage+OpenCV.mm */; };
 		EBBEF6D81705D29900701244 /* ImageDisplayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EBBEF6D61705D29900701244 /* ImageDisplayer.m */; };
 		EBBEF6D91705D29900701244 /* ImageDisplayer.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBBEF6D71705D29900701244 /* ImageDisplayer.xib */; };
-		EBBEF6DD1705D2F400701244 /* Mediator.m in Sources */ = {isa = PBXBuildFile; fileRef = EBBEF6DC1705D2F400701244 /* Mediator.m */; };
+		EBBEF6DD1705D2F400701244 /* Mediator.mm in Sources */ = {isa = PBXBuildFile; fileRef = EBBEF6DC1705D2F400701244 /* Mediator.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,7 +83,7 @@
 		EBBEF6D61705D29900701244 /* ImageDisplayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDisplayer.m; sourceTree = "<group>"; };
 		EBBEF6D71705D29900701244 /* ImageDisplayer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageDisplayer.xib; sourceTree = "<group>"; };
 		EBBEF6DB1705D2F400701244 /* Mediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mediator.h; sourceTree = "<group>"; };
-		EBBEF6DC1705D2F400701244 /* Mediator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mediator.m; sourceTree = "<group>"; };
+		EBBEF6DC1705D2F400701244 /* Mediator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Mediator.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,8 +167,8 @@
 		EBBA6A90170AC11E000FC4F1 /* FLANN-detector */ = {
 			isa = PBXGroup;
 			children = (
-				EBBA6A91170AC140000FC4F1 /* FLANNDetector.mm */,
 				EBBA6A92170AC140000FC4F1 /* FLANNDetector.h */,
+				EBBA6A91170AC140000FC4F1 /* FLANNDetector.mm */,
 			);
 			name = "FLANN-detector";
 			sourceTree = "<group>";
@@ -287,7 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				EBBEF6DB1705D2F400701244 /* Mediator.h */,
-				EBBEF6DC1705D2F400701244 /* Mediator.m */,
+				EBBEF6DC1705D2F400701244 /* Mediator.mm */,
 			);
 			name = mediator;
 			sourceTree = "<group>";
@@ -367,7 +367,7 @@
 				EBBEF6CA1705D03100701244 /* UIImageCVMatConverter.mm in Sources */,
 				EBBEF6D01705D1C200701244 /* UIImage+OpenCV.mm in Sources */,
 				EBBEF6D81705D29900701244 /* ImageDisplayer.m in Sources */,
-				EBBEF6DD1705D2F400701244 /* Mediator.m in Sources */,
+				EBBEF6DD1705D2F400701244 /* Mediator.mm in Sources */,
 				EB499AB31705DFBE00998C0A /* ImageListVC.m in Sources */,
 				EB499AB81705E1D200998C0A /* ImageFinder.m in Sources */,
 				EB499ABC1705E45300998C0A /* ImageResize.m in Sources */,

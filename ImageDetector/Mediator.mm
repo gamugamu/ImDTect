@@ -11,6 +11,8 @@
 #import "ImageListVC.h"
 #import "ImageList.h"
 #import "CompareImages.h"
+#import "FLANNDetector.h"
+#import "UIImage+OpenCV.h"
 
 @interface Mediator()<ImageListVCDelegate>
 @property(nonatomic, retain)ImageDisplayer*     displayer_0;
@@ -55,6 +57,11 @@
     displayer.isSelected        = YES;
     displayer.image.image       = [_allImage imageAtIndex: idx];
     lastDisplayer               = displayer;
+ 
+    // si les deux controllers possèdent chacun une image, alors on lance
+    // l'analyse
+    [self detectImagesMatch: _displayer_0.image.image
+               withImageTwo: _displayer_1.image.image];
 }
 
 #pragma mark alloc / dealloc
@@ -86,6 +93,15 @@
     
     [_imageList makeSmallImage: [[ImageList sharedImageList] imageList]];
     _imageList.delegate = self;
+}
+
+// compare 2 images grace au FLANN et renvoie le résultat en image. Le résultat
+// sera affiché dans le controller "_compareImage"
+- (void)detectImagesMatch:(UIImage*)imageOne withImageTwo:(UIImage*)imageTwo{
+    if(imageOne && imageTwo){
+        cv::Mat imageDetected           = detectWithFlann([imageOne CVMat], [imageTwo CVMat]);
+        _compareImages.imageView.image  = [UIImage imageWithCVMat: imageDetected];
+    }
 }
 
 @end

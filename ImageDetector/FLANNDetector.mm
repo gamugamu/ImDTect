@@ -9,10 +9,8 @@
 #include "FLANNDetector.h"
 
 using namespace cv;
+
 Mat detectWithFlann(Mat image, Mat image2){
-   // Mat image   = [[UIImage imageNamed: imageOne] CVMat];
-   // Mat image2  = [[UIImage imageNamed: imageTwo] CVMat];
-    
     // convertit les images en niveau de gris.
     Mat img_1; cvtColor(image, img_1, CV_BGR2GRAY);
     Mat img_2; cvtColor(image2, img_2, CV_BGR2GRAY);

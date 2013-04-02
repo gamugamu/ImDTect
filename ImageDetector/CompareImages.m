@@ -35,4 +35,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    [_imageView release];
+    [super dealloc];
+}
 @end

@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CompareImages : UIViewController
+@property (retain, nonatomic) IBOutlet UIImageView *imageView;
 
 @end

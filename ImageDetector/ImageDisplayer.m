@@ -9,11 +9,10 @@
 #import "ImageDisplayer.h"
 
 @interface ImageDisplayer ()
-
 @end
 
 @implementation ImageDisplayer
-@synthesize isSelected = _isSelected;
+@synthesize isSelected  = _isSelected;
 
 #pragma mark -------------------------- public ---------------------------------
 #pragma mark -------------------------------------------------------------------
@@ -24,23 +23,11 @@
     self.view.backgroundColor = isSelected? [UIColor blueColor] : [UIColor whiteColor];
 }
 
+#pragma mark getter / setter
+
 #pragma mark - lifeCycle
 
-- (void)viewDidAppear:(BOOL)animated{
-    NSLog(@"viewDidAppear");
-}
-
-- (void)viewDidLoad{
-    NSLog(@"viewDidLoad");
-
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
-
-- (void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark - alloc / Dealloc
 
 - (void)dealloc {
     [_image release];
