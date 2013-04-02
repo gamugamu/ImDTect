@@ -129,7 +129,7 @@ static void startTimeMesurement(){
 }
 
 
-static double outputTimeMesurement{
+static double outputTimeMesurement(){
     t = ((double)getTickCount() - t)/getTickFrequency();
     return t;
 }

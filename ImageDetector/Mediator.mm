@@ -12,14 +12,18 @@
 #import "ImageList.h"
 #import "CompareImages.h"
 #import "FLANNDetector.h"
+#import "DetectorStat.h"
 #import "UIImage+OpenCV.h"
+#import "FTSimpleAnimation.h"
 
 @interface Mediator()<ImageListVCDelegate>
-@property(nonatomic, retain)ImageDisplayer*     displayer_0;
-@property(nonatomic, retain)ImageDisplayer*     displayer_1;
-@property(nonatomic, retain)ImageListVC*        imageList;
-@property(nonatomic, retain)CompareImages*      compareImages;
-@property(nonatomic, assign)ImageList*          allImage;
+@property(nonatomic, retain)ImageDisplayer*         displayer_0;
+@property(nonatomic, retain)ImageDisplayer*         displayer_1;
+@property(nonatomic, retain)ImageListVC*            imageList;
+@property(nonatomic, retain)CompareImages*          compareImages;
+@property(nonatomic, retain)DetectorStat*           timeStat;
+@property(nonatomic, retain)UIViewController*       maincontroller;
+@property(nonatomic, assign)ImageList*              allImage;
 @end
 
 @implementation Mediator
@@ -27,12 +31,17 @@
             displayer_1     = _displayer_1,
             imageList       = _imageList,
             allImage        = _allImage,
-            compareImages   = _compareImages;
+            compareImages   = _compareImages,
+            timeStat        = _timeStat,
+            maincontroller  = _maincontroller;
 
 #define insertController_(co, size)\
     [controller addChildViewController: co];\
     co.view.center = size;\
-    [controller.view addSubview: co.view];
+    [controller.view insertSubview: co.view atIndex: 0];
+
+#define floatToNSString(floatInput)\
+    [NSString stringWithFormat:@"%f", floatInput];
 
 #pragma mark -------------------------- public ---------------------------------
 #pragma mark -------------------------------------------------------------------
@@ -40,10 +49,12 @@
 #pragma mark - public
 
 - (void)manageControllerIntoMain:(UIViewController*)controller{
+    self.maincontroller = controller;
     insertController_(_displayer_0, ((CGPoint){200, 200}));
     insertController_(_displayer_1, ((CGPoint){600, 200}));
-    insertController_(_imageList, ((CGPoint){900, 200}));
+    insertController_(_imageList, ((CGPoint){900, 250}));
     insertController_(_compareImages, ((CGPoint){350, 540}));
+    insertController_(_timeStat, ((CGPoint){850, 600}));
 }
 
 #pragma mark - ImageListDelegate
@@ -74,10 +85,11 @@
 }
 
 - (void)dealloc{
-    [_displayer_0   release];
-    [_displayer_1   release];
-    [_imageList     release];
-    [_compareImages  release];
+    [_displayer_0       release];
+    [_displayer_1       release];
+    [_imageList         release];
+    [_compareImages     release];
+    [_maincontroller    release];
     [super dealloc];
 }
 
@@ -91,8 +103,9 @@
     _displayer_1    = [[ImageDisplayer alloc] initWithNibName: @"ImageDisplayer" bundle: nil];
     _imageList      = [[ImageListVC alloc] initWithNibName: @"ImageListVC" bundle: nil];
     _compareImages  = [[CompareImages alloc] initWithNibName: @"CompareImages" bundle: nil];
+    _timeStat       = [[DetectorStat alloc] initWithNibName: @"DetectorStat" bundle: nil];
     _allImage       = [ImageList sharedImageList];
-    
+
     [_imageList makeSmallImage: [[ImageList sharedImageList] imageList]];
     _imageList.delegate = self;
 }
@@ -103,16 +116,32 @@
 // sera affiché dans le controller "_compareImage"
 - (void)detectImagesMatch:(UIImage*)imageOne withImageTwo:(UIImage*)imageTwo{
     if(imageOne && imageTwo){
-        timeFLANNlapsed timeStat;
-        cv::Mat imageDetected           = detectWithFlann([imageOne CVMat], [imageTwo CVMat], &timeStat);
-        _compareImages.imageView.image  = [UIImage imageWithCVMat: imageDetected];
+        // comme le calcul est long, on affiche une attente.
+        [_timeStat clearOutput];
+        UIView* blackScreen = [[[_maincontroller view] subviews] lastObject];
+        [FTSimpleAnimation makeBlackScreenAppearing: blackScreen];
         
-        [self displayTimeStat: &timeStat];
+        // le calcul est fait en tâche de fond. 
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0L),^{
+            __block timeFLANNlapsed timeStat;
+            __block cv::Mat imageDetected = detectWithFlann([imageOne CVMat], [imageTwo CVMat], &timeStat);
+            
+            // l'affichage se fait depuis la main thread.
+            dispatch_async(dispatch_get_main_queue(),^{
+                _compareImages.imageView.image  = [UIImage imageWithCVMat: imageDetected];
+                [self displayTimeStat: &timeStat];
+                [FTSimpleAnimation makeBlackScreenDisappearing: blackScreen];
+            });
+        });
     }
 }
 
 - (void)displayTimeStat:(timeFLANNlapsed*)stat{
-
+    _timeStat.ext_0.text        = floatToNSString(stat->time_extracted_image_0);
+    _timeStat.ext_1.text        = floatToNSString(stat->time_extracted_image_1);
+    _timeStat.flann_Det.text    = floatToNSString(stat->time_FlannMatcher);
+    _timeStat.display_GM.text   = floatToNSString(stat->time_DrawGoodMatch);
+    _timeStat.corner_det.text   = floatToNSString(stat->time_DetectCorner);
 }
 
 @end
