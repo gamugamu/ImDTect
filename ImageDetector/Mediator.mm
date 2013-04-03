@@ -18,6 +18,7 @@
 
 @interface Mediator()<ImageListVCDelegate, ImageDisplayerDelegate>{
     ImageDisplayer* currentSelectedDisplayer;
+    ImageReconizer* imageReconizer_;
 }
 @property(nonatomic, retain)ImageDisplayer*         displayer_0;
 @property(nonatomic, retain)ImageDisplayer*         displayer_1;
@@ -87,6 +88,7 @@
     [_imageList         release];
     [_compareImages     release];
     [_maincontroller    release];
+    delete imageReconizer_;
     [super dealloc];
 }
 
@@ -96,6 +98,7 @@
 #pragma mark - setUp
 
 - (void)setUp{
+    [self setUpImageReconizer];
     [[ImageList sharedImageList] getImageList:^(NSArray *list) {
         [self performSelectorOnMainThread: @selector(setController:) withObject: list waitUntilDone: NO];
     }];
@@ -115,6 +118,10 @@
     
     [_imageList makeSmallImage: listImage];
     [self manageControllerIntoMain];
+}
+
+- (void)setUpImageReconizer{
+    imageReconizer_ = new ImageReconizer;
 }
 
 #pragma mark - display
@@ -139,7 +146,7 @@
         // le calcul est fait en tâche de fond. 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0L),^{
             __block timeFLANNlapsed timeStat;
-            __block cv::Mat imageDetected = detectWithFlann([imageOne CVMat], [imageTwo CVMat], &timeStat);
+            __block cv::Mat imageDetected = imageReconizer_->detectWithFlann([imageOne CVMat], [imageTwo CVMat], &timeStat);
             
             // puis l'affichage se fait depuis la main thread.
             dispatch_async(dispatch_get_main_queue(),^{

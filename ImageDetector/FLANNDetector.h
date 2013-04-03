@@ -20,6 +20,20 @@ struct timeFLANNlapsed{
     BOOL didFindMatch;
 };
 
-cv::Mat detectWithFlann(cv::Mat image, cv::Mat image2, timeFLANNlapsed* timeStat);
+typedef enum{
+    typeMser,
+}typeFeatureDetector;
+
+class ImageReconizer{
+public:
+    ImageReconizer();
+    cv::Mat detectWithFlann(cv::Mat image, cv::Mat image2, timeFLANNlapsed* timeStat);
+    void setFeatureDetector(typeFeatureDetector type);
+    typeFeatureDetector getFeatureDetector();
+private:
+    cv::FeatureDetector* featurDetector;
+    typeFeatureDetector currentFeature;
+};
+
 
 #endif /* defined(__ImageDetector__FLANNDetector__) */

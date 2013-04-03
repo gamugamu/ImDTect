@@ -53,7 +53,7 @@
     }
     
     // Configure the cell...
-    cell.textLabel.text     = @"errr";
+    cell.textLabel.text     = [NSString stringWithFormat: @"image_%u", indexPath.row];
     cell.imageView.image    = _miniImageList[indexPath.row];
     return cell;
 }

@@ -18,7 +18,10 @@ static void startTimeMesurement();
 static double outputTimeMesurement();
 static bool shapeIsSquare(std::vector<Point2f> points /* 4 */);
 
-Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
+#pragma mark -------------------------- public ---------------------------------
+#pragma mark -------------------------------------------------------------------
+
+Mat ImageReconizer::detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     timeStat->didFindMatch = false;
     printf("------------------\n");
     
@@ -28,12 +31,11 @@ Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     
     //-- Detection des points clès avec le SURF Detector.    
     int minHessian = 400;
-    SurfFeatureDetector detector(minHessian);
     
     std::vector<KeyPoint> keypoints_1, keypoints_2;
     
-    detector.detect( img_1, keypoints_1 );
-    detector.detect( img_2, keypoints_2 );
+    featurDetector->detect( img_1, keypoints_1 );
+    featurDetector->detect( img_2, keypoints_2 );
     
     //-- Step 2: Calculate descriptors (feature vectors)
     SurfDescriptorExtractor extractor;
@@ -120,14 +122,13 @@ Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
         // Si on peut former une zone de points réciproques alors les deux
         // images correspondent.
         timeStat->didFindMatch = shapeIsSquare(scene_corners);
-    
+        timeStat->time_DetectCorner = outputTimeMesurement();
+
         //-- Draw lines between the corners (the mapped object in the scene - image_2 )
         line( img_matches, scene_corners[0] + Point2f( img_1.cols, 0), scene_corners[1] + Point2f( img_1.cols, 0), Scalar(0, 255, 0), 4 );
         line( img_matches, scene_corners[1] + Point2f( img_1.cols, 0), scene_corners[2] + Point2f( img_1.cols, 0), Scalar( 0, 255, 0), 4 );
         line( img_matches, scene_corners[2] + Point2f( img_1.cols, 0), scene_corners[3] + Point2f( img_1.cols, 0), Scalar( 0, 255, 0), 4 );
         line( img_matches, scene_corners[3] + Point2f( img_1.cols, 0), scene_corners[0] + Point2f( img_1.cols, 0), Scalar( 0, 255, 0), 4 );
-    
-        timeStat->time_DetectCorner = outputTimeMesurement();
     
   /*  for( int i = 0; i < good_matches.size(); i++ )
         printf( "-- Good Match [%d] Keypoint 1: %d  -- Keypoint 2: %d  \n", i, good_matches[i].queryIdx, good_matches[i].trainIdx );
@@ -138,10 +139,36 @@ Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     return img_matches;
 }
 
-struct vectors{
-    int x;
-    int y;
-};
+#pragma mark - getter / setter
+
+void ImageReconizer::setFeatureDetector(typeFeatureDetector type){
+    if(currentFeature != type){
+        delete featurDetector;
+
+        switch (type) {
+            case typeMser:
+                featurDetector = new MserFeatureDetector;
+                break;
+                
+            default:
+                break;
+        }
+        currentFeature = type;
+    }
+}
+
+typeFeatureDetector ImageReconizer::getFeatureDetector(){
+    return currentFeature;
+}
+
+#pragma mark - alloc / dealloc
+
+ImageReconizer::ImageReconizer(): featurDetector(0){
+    this->setFeatureDetector(typeMser);
+}
+
+#pragma mark -------------------------- private --------------------------------
+#pragma mark -------------------------------------------------------------------
 
 static inline double distanceSquared(cv::Point2f p1, cv::Point2f p2){
     double dx = (p2.x-p1.x);

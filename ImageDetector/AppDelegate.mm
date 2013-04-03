@@ -33,6 +33,10 @@
     return YES;
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
+    return UIInterfaceOrientationLandscapeLeft;
+}
+
 #pragma mark - alloc / dealloc
 
 - (void)dealloc{
