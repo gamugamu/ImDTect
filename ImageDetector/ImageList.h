@@ -11,5 +11,5 @@
 @interface ImageList : NSObject
 + (ImageList*)sharedImageList;
 - (UIImage*)imageAtIndex:(NSUInteger)idx;
-@property(nonatomic, retain, readonly)NSMutableArray* imageList;
+- (void)getImageList:(void(^)(NSArray* list))list;
 @end

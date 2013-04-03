@@ -24,7 +24,6 @@
 @property(nonatomic, retain)ImageListVC*            imageList;
 @property(nonatomic, retain)CompareImages*          compareImages;
 @property(nonatomic, retain)DetectorStat*           timeStat;
-@property(nonatomic, retain)UIViewController*       maincontroller;
 @property(nonatomic, assign)ImageList*              allImage;
 @end
 
@@ -38,26 +37,15 @@
             maincontroller  = _maincontroller;
 
 #define insertController_(co, size)\
-    [controller addChildViewController: co];\
+    [_maincontroller addChildViewController: co];\
     co.view.center = size;\
-    [controller.view insertSubview: co.view atIndex: 0];
+    [_maincontroller.view insertSubview: co.view atIndex: 0];
 
 #define floatToNSString(floatInput)\
     [NSString stringWithFormat:@"%f", floatInput];
 
 #pragma mark -------------------------- public ---------------------------------
 #pragma mark -------------------------------------------------------------------
-
-#pragma mark - public
-
-- (void)manageControllerIntoMain:(UIViewController*)controller{
-    self.maincontroller = controller;
-    insertController_(_displayer_0, ((CGPoint){200, 200}));
-    insertController_(_displayer_1, ((CGPoint){600, 200}));
-    insertController_(_imageList, ((CGPoint){900, 250}));
-    insertController_(_compareImages, ((CGPoint){350, 540}));
-    insertController_(_timeStat, ((CGPoint){850, 600}));
-}
 
 #pragma mark - ImageListDelegate
 
@@ -108,20 +96,36 @@
 #pragma mark - setUp
 
 - (void)setUp{
+    [[ImageList sharedImageList] getImageList:^(NSArray *list) {
+        [self performSelectorOnMainThread: @selector(setController:) withObject: list waitUntilDone: NO];
+    }];
+}
+
+- (void)setController:(NSArray*)listImage{
     _displayer_0    = [[ImageDisplayer alloc] initWithNibName: @"ImageDisplayer" bundle: nil];
     _displayer_1    = [[ImageDisplayer alloc] initWithNibName: @"ImageDisplayer" bundle: nil];
     _imageList      = [[ImageListVC alloc] initWithNibName: @"ImageListVC" bundle: nil];
     _compareImages  = [[CompareImages alloc] initWithNibName: @"CompareImages" bundle: nil];
     _timeStat       = [[DetectorStat alloc] initWithNibName: @"DetectorStat" bundle: nil];
     _allImage       = [ImageList sharedImageList];
-
-    [_imageList makeSmallImage: [[ImageList sharedImageList] imageList]];
+    
     _imageList.delegate     = self;
     _displayer_0.delegate   = self;
     _displayer_1.delegate   = self;
+    
+    [_imageList makeSmallImage: listImage];
+    [self manageControllerIntoMain];
 }
 
 #pragma mark - display
+
+- (void)manageControllerIntoMain{
+    insertController_(_displayer_0, ((CGPoint){200, 200}));
+    insertController_(_displayer_1, ((CGPoint){600, 200}));
+    insertController_(_imageList, ((CGPoint){900, 250}));
+    insertController_(_compareImages, ((CGPoint){350, 540}));
+    insertController_(_timeStat, ((CGPoint){850, 600}));
+}
 
 // compare 2 images grace au FLANN et renvoie le résultat en image. Le résultat
 // sera affiché dans le controller "_compareImage"

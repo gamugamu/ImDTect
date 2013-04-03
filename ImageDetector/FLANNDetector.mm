@@ -27,8 +27,9 @@ Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     Mat img_2; cvtColor(image2, img_2, CV_BGR2GRAY);
     
     //-- Detection des points clès avec le SURF Detector.    
-    MserFeatureDetector detector;
-
+    int minHessian = 400;
+    SurfFeatureDetector detector(minHessian);
+    
     std::vector<KeyPoint> keypoints_1, keypoints_2;
     
     detector.detect( img_1, keypoints_1 );
@@ -99,6 +100,7 @@ Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
             scene.push_back( keypoints_2[ good_matches[i].trainIdx ].pt );
         }
     
+        printf("+++++++++++++++++++++ %zu\n", good_matches.size());
         timeStat->time_DrawGoodMatch = outputTimeMesurement();
 
         startTimeMesurement();
@@ -136,8 +138,19 @@ Mat detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     return img_matches;
 }
 
+struct vectors{
+    int x;
+    int y;
+};
+
+static inline double distanceSquared(cv::Point2f p1, cv::Point2f p2){
+    double dx = (p2.x-p1.x);
+    double dy = (p2.y-p1.y);
+    return sqrt(dx*dx + dy*dy);
+}
+
 static bool shapeIsSquare(std::vector<Point2f> points /* 4 */){
-    int tolerance = 10;
+    int tolerance = 45;
     int x1 = points[0].x;
     int x2 = points[1].x;
     int x3 = points[2].x;
@@ -147,17 +160,20 @@ static bool shapeIsSquare(std::vector<Point2f> points /* 4 */){
     int y2 = points[1].y;
     int y3 = points[2].y;
     int y4 = points[3].y;
-    
-    printf("%i %i %i %i \n", x1, x2, x3, x4);
-    printf("%i %i %i %i \n", y1, y2, y3, y4);
-    
-    printf("evalX %i %i\n", abs(x1 - x2), abs(x3 - x4));
-    printf("evalY %i %i\n", abs(x3 - y4), abs(y2 - y1));
 
+    printf("distance entre les points: 1 et 2: %lf \n", distanceSquared(points[0], points[1]));
+    printf("distance entre les points: 2 et 3: %lf \n", distanceSquared(points[1], points[2]));
+    printf("distance entre les points: 3 et 4: %lf \n", distanceSquared(points[2], points[3]));
+    printf("distance entre les points: 4 et 1: %lf \n", distanceSquared(points[3], points[0]));
+
+    printf("evalX %i %i\n", abs(x1 - x2), abs(x2 - x3));
+    printf("evalX %i %i\n", abs(x1 - x3), abs(x2 - x4));
+
+    //printf("x1 + x2 =", );
     // si les points sont trop rapprochés, ce n'est pas un rectangle.
     
     if((abs(x1 - x2) < tolerance || abs(x3 - x4) < tolerance) ||
-       (abs(x1 - x3) < tolerance || abs(x2 - x4) < tolerance))
+       (abs(x1 - x3) < tolerance))
         return false;
     
     else

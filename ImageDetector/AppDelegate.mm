@@ -27,7 +27,7 @@
     self.window         = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
     
-    [_mediator manageControllerIntoMain: _viewController];
+    _mediator.maincontroller = _viewController;
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

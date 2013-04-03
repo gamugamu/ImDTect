@@ -11,11 +11,15 @@
 #import "ImageFinder.h"
 
 @interface ImageList()
+@property(nonatomic, copy)void(^imageRequest)(NSArray* list);
+@property(nonatomic, assign)BOOL isRequestingList;
 @property(nonatomic, retain)NSMutableArray* imageList;
 @end
 
 @implementation ImageList
-@synthesize imageList = _imageList;
+@synthesize imageList           = _imageList,
+            imageRequest        = _imageRequest,
+            isRequestingList    = _isRequestingList;
 
 #pragma mark -------------------------- public ---------------------------------
 #pragma mark -------------------------------------------------------------------
@@ -26,11 +30,23 @@
     return [_imageList objectAtIndex: idx];
 }
 
+- (void)getImageList:(void(^)(NSArray* list))list{
+    if(_isRequestingList){
+        self.imageRequest = list;
+    }else if(list){
+        list(_imageList);
+    }
+}
+
 #pragma mark - alloc / dealloc
 
 - (id)init{
     if(self = [super init]){
-        [self getAllList: [ImageFinder imageFromUserDocument]];
+        _isRequestingList = YES;
+
+        [ImageFinder imageFromUserDocument:^(NSArray *data) {
+            [self getAllList: data];
+        }];
     }
     return self;
 }
@@ -49,10 +65,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ImageList);
 
 - (void)getAllList:(NSArray*)list{
     self.imageList = [NSMutableArray array];
-    
+        
     for (NSString* path in list) {
         UIImage* image = [UIImage imageWithContentsOfFile: path];
-        [_imageList addObject: image];
+
+        if(image)
+            [_imageList addObject: image];
+    }
+    
+    _isRequestingList = NO;
+    
+    if(_imageRequest){
+        _imageRequest(_imageList);
     }
 }
 

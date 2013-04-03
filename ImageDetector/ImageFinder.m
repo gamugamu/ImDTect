@@ -7,21 +7,27 @@
 //
 
 #import "ImageFinder.h"
+#import "ImageLoader.h"
 
 @implementation ImageFinder
 
-+ (NSArray*)imageFromUserDocument{
++ (void)imageFromUserDocument:(void(^)(NSArray* data))completion{
     NSArray* allPAth            = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask, YES);
     NSFileManager* fileManager  = [NSFileManager defaultManager];
     NSString* basePath          = allPAth[0];
-    NSMutableArray* fullPath    = [NSMutableArray arrayWithCapacity: 10];
 
-    for(NSString* fileName in [fileManager contentsOfDirectoryAtPath: basePath error: nil]){
-        if(![fileName rangeOfString:@".DSStore"].length)
-            [fullPath addObject: [basePath stringByAppendingPathComponent: fileName]];
-    }
-    NSLog(@"Document Path %@", allPAth[0]);
-
-    return fullPath;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSMutableArray* fullPath    = [NSMutableArray arrayWithCapacity: 10];
+        ImageLoader* imageLoader    = [ImageLoader new];
+        [imageLoader loadQueue: basePath];
+        
+        for(NSString* fileName in [fileManager contentsOfDirectoryAtPath: basePath error: nil]){
+            if(![fileName rangeOfString:@".DSStore"].length)
+                [fullPath addObject: [basePath stringByAppendingPathComponent: fileName]];
+        }
+        
+        if (completion)
+            completion(fullPath);
+    });
 }
 @end

@@ -24,9 +24,9 @@
 
 - (void)makeSmallImage:(NSArray* /*UIImages*/)list{
     self.miniImageList = [NSMutableArray array];
-    
+
     for(UIImage* image in list){
-        UIImage* mini =[ImageResize reduceImage: image size: CGSizeMake(70, 70)];
+        UIImage* mini = [ImageResize reduceImage: image size: CGSizeMake(70, 70)];
         [_miniImageList addObject: mini];
     }
     

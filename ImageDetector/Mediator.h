@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface Mediator : NSObject
-- (void)manageControllerIntoMain:(UIViewController*)controller;
+@property(nonatomic, retain)UIViewController* maincontroller;
 @end

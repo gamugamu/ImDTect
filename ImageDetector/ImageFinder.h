@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface ImageFinder : NSObject
-+ (NSArray*)imageFromUserDocument;
++ (void)imageFromUserDocument:(void(^)(NSArray* data))completion;
 @end
