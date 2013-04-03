@@ -18,19 +18,31 @@ static void startTimeMesurement();
 static double outputTimeMesurement();
 static bool shapeIsSquare(std::vector<Point2f> points /* 4 */);
 
+const char* typeFeatName[] = {
+    "TpMserDetector\n",
+    "TpFastAdjuster\n",
+    "TpStarAdjuster\n",
+    "TpSurfAdjuster\n",
+    "TpDenseDetector\n",
+    "TpFastDetector\n",
+    "TpGoodDetector\n",
+    "TpSiftDetector\n",
+    "TpSimpleBlobDetector\n",
+    "TpStarFeaturDetector\n",
+    "TpSurfFeaturDetector\n"};
+
 #pragma mark -------------------------- public ---------------------------------
 #pragma mark -------------------------------------------------------------------
 
 Mat ImageReconizer::detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* timeStat){
     timeStat->didFindMatch = false;
-    printf("------------------\n");
     
     // convertit les images en niveau de gris.
     Mat img_1; cvtColor(image, img_1, CV_BGR2GRAY);
     Mat img_2; cvtColor(image2, img_2, CV_BGR2GRAY);
     
     //-- Detection des points clès avec le SURF Detector.    
-    int minHessian = 400;
+   // int minHessian = 400;
     
     std::vector<KeyPoint> keypoints_1, keypoints_2;
     
@@ -102,7 +114,6 @@ Mat ImageReconizer::detectWithFlann(Mat image, Mat image2, timeFLANNlapsed* time
             scene.push_back( keypoints_2[ good_matches[i].trainIdx ].pt );
         }
     
-        printf("+++++++++++++++++++++ %zu\n", good_matches.size());
         timeStat->time_DrawGoodMatch = outputTimeMesurement();
 
         startTimeMesurement();
@@ -146,12 +157,22 @@ void ImageReconizer::setFeatureDetector(typeFeatureDetector type){
         delete featurDetector;
 
         switch (type) {
-            case typeMser:
+            case TpMserDetector:            featurDetector = new MserFeatureDetector;           break;
+            case TpFastAdjuster:            featurDetector = new FastAdjuster;                  break;
+            case TpStarAdjuster:            featurDetector = new StarAdjuster;                  break;
+            case TpSurfAdjuster:            featurDetector = new SurfAdjuster;                  break;
+            case TpDenseDetector:           featurDetector = new DenseFeatureDetector;          break;
+            case TpFastDetector:            featurDetector = new FastFeatureDetector;           break;
+            case TpGoodDetector:            featurDetector = new GoodFeaturesToTrackDetector;   break;
+            case TpSiftDetector:            featurDetector = new SiftFeatureDetector;           break;
+            case TpSimpleBlobDetector:      featurDetector = new SimpleBlobDetector;            break;
+            case TpStarFeaturDetector:      featurDetector = new StarFeatureDetector;           break;
+            case TpSurfFeaturDetector:      featurDetector = new SurfFeatureDetector;           break;
+                default:
                 featurDetector = new MserFeatureDetector;
-                break;
-                
-            default:
-                break;
+                currentFeature = TpMserDetector;
+                return;
+
         }
         currentFeature = type;
     }
@@ -164,7 +185,7 @@ typeFeatureDetector ImageReconizer::getFeatureDetector(){
 #pragma mark - alloc / dealloc
 
 ImageReconizer::ImageReconizer(): featurDetector(0){
-    this->setFeatureDetector(typeMser);
+    this->setFeatureDetector(TpMserDetector);
 }
 
 #pragma mark -------------------------- private --------------------------------

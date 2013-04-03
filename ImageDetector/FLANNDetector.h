@@ -8,7 +8,6 @@
 
 #ifndef __ImageDetector__FLANNDetector__
 #define __ImageDetector__FLANNDetector__
-
 #include <iostream>
 
 struct timeFLANNlapsed{
@@ -21,8 +20,21 @@ struct timeFLANNlapsed{
 };
 
 typedef enum{
-    typeMser,
+    TpMserDetector,
+    TpFastAdjuster,
+    TpStarAdjuster,
+    TpSurfAdjuster,
+    TpDenseDetector,
+    TpFastDetector,
+    TpGoodDetector,
+    TpSiftDetector,
+    TpSimpleBlobDetector,
+    TpStarFeaturDetector,
+    TpSurfFeaturDetector,
+    TpTotal
 }typeFeatureDetector;
+
+extern const char* typeFeatName[];
 
 class ImageReconizer{
 public:

@@ -41,6 +41,8 @@
 		EBBEF6DD1705D2F400701244 /* Mediator.mm in Sources */ = {isa = PBXBuildFile; fileRef = EBBEF6DC1705D2F400701244 /* Mediator.mm */; };
 		EBDBC845170C0471007DA5CD /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = EBDBC844170C0471007DA5CD /* ImageLoader.m */; };
 		EBDBC848170C07C3007DA5CD /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = EBDBC847170C07C3007DA5CD /* JSONKit.m */; };
+		EBDBC84F170C62C8007DA5CD /* AlgoSwitcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = EBDBC84D170C62C8007DA5CD /* AlgoSwitcher.mm */; };
+		EBDBC850170C62C8007DA5CD /* AlgoSwitcher.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBDBC84E170C62C8007DA5CD /* AlgoSwitcher.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +100,9 @@
 		EBDBC844170C0471007DA5CD /* ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLoader.m; sourceTree = "<group>"; };
 		EBDBC846170C07C3007DA5CD /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		EBDBC847170C07C3007DA5CD /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		EBDBC84C170C62C8007DA5CD /* AlgoSwitcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlgoSwitcher.h; sourceTree = "<group>"; };
+		EBDBC84D170C62C8007DA5CD /* AlgoSwitcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlgoSwitcher.mm; sourceTree = "<group>"; };
+		EBDBC84E170C62C8007DA5CD /* AlgoSwitcher.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlgoSwitcher.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +305,7 @@
 		EBBEF6D31705D24D00701244 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				EBDBC84B170C6287007DA5CD /* changeRecoAlgo */,
 				EBBA6A94170ACF11000FC4F1 /* TimeStat */,
 				EB499AC61705F4F900998C0A /* compareImage */,
 				EB499AAF1705DF9F00998C0A /* tableView */,
@@ -353,6 +359,16 @@
 				EBBA6A9B170AD57C000FC4F1 /* FTSimpleAnimation.m */,
 			);
 			name = SimpleAnimation;
+			sourceTree = "<group>";
+		};
+		EBDBC84B170C6287007DA5CD /* changeRecoAlgo */ = {
+			isa = PBXGroup;
+			children = (
+				EBDBC84C170C62C8007DA5CD /* AlgoSwitcher.h */,
+				EBDBC84D170C62C8007DA5CD /* AlgoSwitcher.mm */,
+				EBDBC84E170C62C8007DA5CD /* AlgoSwitcher.xib */,
+			);
+			name = changeRecoAlgo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -415,6 +431,7 @@
 				EB499AB41705DFBE00998C0A /* ImageListVC.xib in Resources */,
 				EB499ACB1705F51800998C0A /* CompareImages.xib in Resources */,
 				EBBA6A99170ACF37000FC4F1 /* DetectorStat.xib in Resources */,
+				EBDBC850170C62C8007DA5CD /* AlgoSwitcher.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +459,7 @@
 				EBBA6A9C170AD57C000FC4F1 /* FTSimpleAnimation.m in Sources */,
 				EBDBC845170C0471007DA5CD /* ImageLoader.m in Sources */,
 				EBDBC848170C07C3007DA5CD /* JSONKit.m in Sources */,
+				EBDBC84F170C62C8007DA5CD /* AlgoSwitcher.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

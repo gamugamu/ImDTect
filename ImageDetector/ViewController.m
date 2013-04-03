@@ -13,9 +13,14 @@
 @end
 
 @implementation ViewController
+@synthesize buttonDelegate = _buttonDelegate;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
     return interfaceOrientation == UIInterfaceOrientationLandscapeLeft;
 }
 
+- (IBAction)buttonTaped:(UIButton *)sender{
+    if([_buttonDelegate respondsToSelector: @selector(buttonTaped)])
+        [_buttonDelegate performSelector: @selector(buttonTaped)];
+}
 @end

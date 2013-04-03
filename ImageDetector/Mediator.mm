@@ -14,9 +14,10 @@
 #import "FLANNDetector.h"
 #import "DetectorStat.h"
 #import "UIImage+OpenCV.h"
+#import "AlgoSwitcher.h"
 #import "FTSimpleAnimation.h"
 
-@interface Mediator()<ImageListVCDelegate, ImageDisplayerDelegate>{
+@interface Mediator()<ImageListVCDelegate, ImageDisplayerDelegate, AlgoSwitcherDelegate>{
     ImageDisplayer* currentSelectedDisplayer;
     ImageReconizer* imageReconizer_;
 }
@@ -25,6 +26,7 @@
 @property(nonatomic, retain)ImageListVC*            imageList;
 @property(nonatomic, retain)CompareImages*          compareImages;
 @property(nonatomic, retain)DetectorStat*           timeStat;
+@property(nonatomic, retain)AlgoSwitcher*           algoSwitcher;
 @property(nonatomic, assign)ImageList*              allImage;
 @end
 
@@ -35,7 +37,8 @@
             allImage        = _allImage,
             compareImages   = _compareImages,
             timeStat        = _timeStat,
-            maincontroller  = _maincontroller;
+            maincontroller  = _maincontroller,
+            algoSwitcher    = _algoSwitcher;
 
 #define insertController_(co, size)\
     [_maincontroller addChildViewController: co];\
@@ -67,10 +70,46 @@
     if(displayer.isSelected){
         currentSelectedDisplayer = displayer;
         displayOff.isSelected = NO;
-    }else{
+    }else
         currentSelectedDisplayer = displayOff;
+}
+
+#pragma mark - AlgoSwitcherDelegate
+
+#define addBlackScreen()\
+    UIView* blackScreen = [[_maincontroller view] viewWithTag: 30];\
+    [FTSimpleAnimation makeBlackScreenAppearing: blackScreen];
+
+#define removeBlackScreen()\
+    UIView* blackScreen = [[_maincontroller view] viewWithTag: 30];\
+    [FTSimpleAnimation makeBlackScreenDisappearing: blackScreen];
+
+- (void)buttonTapped:(AlgoSwitcher *)algoSwitcher{
+    [_algoSwitcher.view removeFromSuperview];
+    [_algoSwitcher removeFromParentViewController];
+    removeBlackScreen();
+}
+
+#pragma mark - implicitDelegate
+
+- (void)buttonTaped{
+    addBlackScreen();
+    _algoSwitcher.view.center = (CGPoint){500, 400};
+    [_maincontroller.view addSubview: _algoSwitcher.view];
+    [_maincontroller addChildViewController: _algoSwitcher];
+}
+
+#pragma mark - getter / setter
+
+- (void)setMaincontroller:(UIViewController *)maincontroller{
+    if(_maincontroller != maincontroller){
+        [_maincontroller autorelease];
+         _maincontroller = [maincontroller autorelease];
+        
+        addBlackScreen();
+        if([maincontroller respondsToSelector: @selector(setButtonDelegate:)])
+            [maincontroller performSelector: @selector(setButtonDelegate:) withObject: self];
     }
-    
 }
 
 #pragma mark alloc / dealloc
@@ -88,6 +127,7 @@
     [_imageList         release];
     [_compareImages     release];
     [_maincontroller    release];
+    [_algoSwitcher      release];
     delete imageReconizer_;
     [super dealloc];
 }
@@ -100,7 +140,10 @@
 - (void)setUp{
     [self setUpImageReconizer];
     [[ImageList sharedImageList] getImageList:^(NSArray *list) {
-        [self performSelectorOnMainThread: @selector(setController:) withObject: list waitUntilDone: NO];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            removeBlackScreen();
+            [self setController: list];
+        });
     }];
 }
 
@@ -111,10 +154,12 @@
     _compareImages  = [[CompareImages alloc] initWithNibName: @"CompareImages" bundle: nil];
     _timeStat       = [[DetectorStat alloc] initWithNibName: @"DetectorStat" bundle: nil];
     _allImage       = [ImageList sharedImageList];
-    
+    _algoSwitcher   = [[AlgoSwitcher alloc] initWithNibName: @"AlgoSwitcher" bundle: nil];
     _imageList.delegate     = self;
     _displayer_0.delegate   = self;
     _displayer_1.delegate   = self;
+    _algoSwitcher.delegate  = self;
+    _algoSwitcher.imageReconizer = imageReconizer_;
     
     [_imageList makeSmallImage: listImage];
     [self manageControllerIntoMain];
@@ -140,8 +185,7 @@
     if(imageOne && imageTwo){
         // comme le calcul est long, on affiche une attente.
         [_timeStat clearOutput];
-        UIView* blackScreen = [[[_maincontroller view] subviews] lastObject];
-        [FTSimpleAnimation makeBlackScreenAppearing: blackScreen];
+        addBlackScreen();
         
         // le calcul est fait en tâche de fond. 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0L),^{
@@ -152,7 +196,7 @@
             dispatch_async(dispatch_get_main_queue(),^{
                 _compareImages.imageView.image  = [UIImage imageWithCVMat: imageDetected];
                 [self displayTimeStat: &timeStat];
-                [FTSimpleAnimation makeBlackScreenDisappearing: blackScreen];
+                removeBlackScreen();
             });
         });
     }
